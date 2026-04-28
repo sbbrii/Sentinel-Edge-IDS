@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Sentinel IDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="alert_popup.css">
+</head>
+<body>
+  <div class="dashboard-grid">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <div>
+          <div class="logo-text">SILENT SENTINEL</div>
+          <div class="logo-sub">INTRUSION DETECTION SYSTEM</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-badge monitoring" id="status-badge">
+          <span class="status-dot"></span>
+          MONITORING
+        </div>
+        <div class="last-update" id="last-update">—</div>
+      </div>
+    </header>
+
+    <!-- Metrics Row -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+        </div>
+        <div>
+          <div class="metric-label">Total Alerts</div>
+          <div class="metric-value" id="stat-total">0</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-danger)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </div>
+        <div>
+          <div class="metric-label">Attacks Detected</div>
+          <div class="metric-value" id="stat-attacks">0</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-warning)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div class="metric-label">IPs Blocked</div>
+          <div class="metric-value" id="stat-blocked">0</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-info)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <div class="metric-label">Last Score</div>
+          <div class="metric-value" id="stat-score">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Timeline -->
+    <div class="chart-container main-timeline">
+      <h2 class="chart-title">Alerts Over Time</h2>
+      <div class="chart-wrap">
+        <canvas id="chart-timeline"></canvas>
+      </div>
+    </div>
+
+    <!-- Bottom Layout: Sidebar + Feed -->
+    <div class="bottom-layout">
+      <!-- Active Blocks Sidebar -->
+      <aside class="blocked-sidebar">
+        <h2 class="chart-title">Active Blocks</h2>
+        <div id="blocked-list" class="blocked-list">
+          <div class="empty-state">No active blocks</div>
+        </div>
+      </aside>
+
+      <!-- Alert Feed Table -->
+      <section class="alert-feed">
+        <div class="alert-feed-header">
+          <h2 class="chart-title">Alert Feed</h2>
+          <span class="refresh-label">AUTO-REFRESH 5s</span>
+        </div>
+        <div class="table-wrap">
+          <div id="table-container">
+            <div class="empty-state"><p>AWAITING TRAFFIC DATA...</p></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="toast"></div>
+  </div>
+
+<!-- ── Attack Alert Backdrop + Modal ────────────────────────────────────── -->
+<div id="ap-backdrop">
+  <div id="ap-modal" role="dialog" aria-modal="true" aria-labelledby="ap-title">
+
+    <!-- Colour accent strip -->
+    <div id="ap-accent-bar"></div>
+
+    <!-- Countdown timer bar -->
+    <div id="ap-timer-bar"></div>
+
+    <!-- Close button -->
+    <button id="ap-close" aria-label="Close alert">✕</button>
+
+    <div class="ap-body">
+
+      <div class="ap-header">
+        <div class="ap-icon" aria-hidden="true">⚠</div>
+        <div class="ap-title-group">
+          <div id="ap-title">⚠ Attack Blocked</div>
+          <div class="ap-subtitle">Silent Sentinel IDS</div>
+        </div>
+      </div>
+
+      <div class="ap-divider"></div>
+
+      <div id="ap-message">An anomaly was detected and blocked.</div>
+
+      <div class="ap-fields">
+
+        <div class="ap-field">
+          <span class="ap-field-label">Attacker IP</span>
+          <span class="ap-field-value" id="ap-ip">—</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Attack Type</span>
+          <span class="ap-field-value" id="ap-attack-type">—</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Severity</span>
+          <div class="ap-score-row">
+            <span class="ap-score-num ap-score-high" id="ap-score-num">—</span>
+            <div class="ap-score-bar-track">
+              <div class="ap-score-bar-fill" id="ap-score-bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Block Type</span>
+          <span class="ap-badge ap-badge-perm" id="ap-block-badge">● PERMANENT</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Detected At</span>
+          <span class="ap-field-value" id="ap-timestamp">—</span>
+        </div>
+
+      </div>
+
+      <div class="ap-footer">
+        <span class="ap-dismiss-hint">Auto-dismiss 6s</span>
+        <button id="ap-dismiss-btn">Dismiss</button>
+        <button id="ap-ack-btn">Acknowledge</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ── End Alert Modal ───────────────────────────────────────────────────── -->
+
+<script src="script.js"></script>
+<script src="alert_popup.js"></script>
+</body>
+</html>

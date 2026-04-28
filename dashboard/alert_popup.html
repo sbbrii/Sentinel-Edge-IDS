@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silent Sentinel IDS — Alert Popup Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="alert_popup.css">
+
+  <style>
+    /* ── Demo page scaffold ── */
+    .demo-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+    }
+
+    .demo-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .demo-btn {
+      padding: 10px 22px;
+      border-radius: 9px;
+      border: 1px solid #3a3a3a;
+      background: rgba(255,255,255,0.03);
+      color: #c0c0c0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .demo-btn:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: #777;
+      color: #fff;
+    }
+    .demo-btn.red {
+      border-color: rgba(255,59,59,0.4);
+      color: #ff7070;
+    }
+    .demo-btn.red:hover {
+      background: rgba(255,59,59,0.1);
+      border-color: #ff3b3b;
+      box-shadow: 0 0 14px rgba(255,59,59,0.2);
+    }
+    .demo-btn.orange {
+      border-color: rgba(255,140,0,0.4);
+      color: #ffaa50;
+    }
+    .demo-btn.orange:hover {
+      background: rgba(255,140,0,0.1);
+      border-color: #ff8c00;
+      box-shadow: 0 0 14px rgba(255,140,0,0.2);
+    }
+
+    .demo-note {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.18);
+      text-align: center;
+      max-width: 380px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     POPUP MARKUP
+     ─────────────────────────────────────────────────────────────────
+     Copy this entire <div id="ap-backdrop"> block into dashboard.html
+     just before the closing </body> tag.
+  ══════════════════════════════════════════════════════════════════ -->
+<div id="ap-backdrop">
+  <div id="ap-modal" role="dialog" aria-modal="true" aria-labelledby="ap-title">
+
+    <!-- Colour accent strip at the top -->
+    <div id="ap-accent-bar"></div>
+
+    <!-- Countdown timer bar at the bottom -->
+    <div id="ap-timer-bar"></div>
+
+    <!-- Close (X) button -->
+    <button id="ap-close" aria-label="Close alert">✕</button>
+
+    <div class="ap-body">
+
+      <!-- Header: icon + title -->
+      <div class="ap-header">
+        <div class="ap-icon" aria-hidden="true">⚠</div>
+        <div class="ap-title-group">
+          <div id="ap-title">⚠ Attack Blocked</div>
+          <div class="ap-subtitle">Silent Sentinel IDS</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="ap-divider"></div>
+
+      <!-- Short descriptive message -->
+      <div id="ap-message">
+        An anomaly was detected and blocked by Silent Sentinel IDS.
+      </div>
+
+      <!-- Detail fields -->
+      <div class="ap-fields">
+
+        <div class="ap-field">
+          <span class="ap-field-label">Attacker IP</span>
+          <span class="ap-field-value" id="ap-ip">—</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Attack Type</span>
+          <span class="ap-field-value" id="ap-attack-type">—</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Severity</span>
+          <div class="ap-score-row">
+            <span class="ap-score-num ap-score-high" id="ap-score-num">—</span>
+            <div class="ap-score-bar-track">
+              <div class="ap-score-bar-fill" id="ap-score-bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Block Type</span>
+          <span class="ap-badge ap-badge-perm" id="ap-block-badge">● PERMANENT</span>
+        </div>
+
+        <div class="ap-field">
+          <span class="ap-field-label">Detected At</span>
+          <span class="ap-field-value" id="ap-timestamp">—</span>
+        </div>
+
+      </div>
+
+      <!-- Footer: auto-dismiss hint + action buttons -->
+      <div class="ap-footer">
+        <span class="ap-dismiss-hint">Auto-dismiss 6s</span>
+        <button id="ap-dismiss-btn">Dismiss</button>
+        <button id="ap-ack-btn">Acknowledge</button>
+      </div>
+
+    </div><!-- /.ap-body -->
+  </div><!-- /#ap-modal -->
+</div><!-- /#ap-backdrop -->
+<!-- ══════════════════════════════════════════════════════ End Popup ══ -->
+
+
+<!-- Demo page scaffold (NOT needed in dashboard.html) -->
+<div class="demo-page" aria-hidden="true">
+  <div class="demo-label">Alert Popup — Demo Triggers</div>
+  <div class="demo-row">
+    <button class="demo-btn red"    onclick="triggerDemo('high')">▶ High Severity (DDoS)</button>
+    <button class="demo-btn orange" onclick="triggerDemo('medium')">▶ Med Severity (PortScan)</button>
+    <button class="demo-btn"        onclick="triggerDemo('low')">▶ Low Score (BruteForce)</button>
+  </div>
+  <div class="demo-note">
+    Click any button after this page loads to pre-warm audio,<br>
+    then trigger an alert. No buzzer.mp3 file required.
+  </div>
+</div>
+
+
+<!--
+  SCRIPT TAGS for dashboard.html:
+  Add both lines below before </body> in dashboard.html.
+  Remove the demo <script> block (triggerDemo) — that's only for this page.
+-->
+<script src="alert_popup.js"></script>
+
+<!-- Demo helper only — do NOT copy into dashboard.html -->
+<script>
+  var _DEMO_ALERTS = {
+    high: {
+      ip: '192.168.4.' + (Math.floor(Math.random() * 253) + 1),
+      attack_type:   'DDoS',
+      anomaly_score: 87.4,
+      block_status:  'permanent',
+      timestamp:     new Date().toISOString()
+    },
+    medium: {
+      ip: '192.168.4.' + (Math.floor(Math.random() * 253) + 1),
+      attack_type:   'PortScan',
+      anomaly_score: 55.2,
+      block_status:  'temporary',
+      timestamp:     new Date().toISOString()
+    },
+    low: {
+      ip: '192.168.4.' + (Math.floor(Math.random() * 253) + 1),
+      attack_type:   'BruteForce',
+      anomaly_score: 22.8,
+      block_status:  'temporary',
+      timestamp:     new Date().toISOString()
+    }
+  };
+
+  function triggerDemo(level) {
+    // Randomise IP each time so it looks unique
+    _DEMO_ALERTS[level].ip = '192.168.4.' + (Math.floor(Math.random() * 253) + 1);
+    _DEMO_ALERTS[level].timestamp = new Date().toISOString();
+    window.showAlert(_DEMO_ALERTS[level]);
+  }
+</script>
+
+</body>
+</html>
