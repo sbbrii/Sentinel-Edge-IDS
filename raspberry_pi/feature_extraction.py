@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 
 
-INTERFACE        = "eth0"
+INTERFACE = "enp4s0f1"
 PACKET_THRESHOLD = 10       # compute features every N packets per flow
 SNAPLEN          = 128      # bytes captured per packet (headers only)
 PROMISC          = True
@@ -162,9 +162,8 @@ def extract_features():
 def _capture_loop():
     cap = pcapy.open_live(INTERFACE, SNAPLEN, PROMISC, TIMEOUT_MS)
     cap.setfilter(BPF_FILTER)
-    # dispatch(-1) loops forever; calls process_packet for each packet
-    cap.dispatch(-1, process_packet)
-
+    while True:
+        cap.dispatch(1, process_packet)
 
 def start_sniffing():
     t = threading.Thread(target=_capture_loop, daemon=True)

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard | MediCare General Hospital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0056b3;
+            --primary-light: #e6f2ff;
+            --primary-dark: #004494;
+            --secondary: #f4f7fa;
+            --text-main: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --border: 1px solid #eaeaea;
+            --accent: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary);
+            color: var(--text-main);
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-greeting {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        /* Global Cards */
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            border: var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+            color: var(--primary-dark);
+        }
+
+        .card-header i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        /* Profile Section */
+        .profile-card {
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto 15px;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-id {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background-color: var(--secondary);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        /* Dashboard Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Appointments */
+        .appointment-list {
+            list-style: none;
+        }
+
+        .appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .appointment-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .appointment-item.urgent {
+            border-left-color: #ffc107;
+        }
+
+        .app-date {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .app-date .day { font-size: 20px; font-weight: 700; }
+        .app-date .month { font-size: 12px; text-transform: uppercase; font-weight: 600;}
+
+        .app-details {
+            flex-grow: 1;
+            padding: 0 20px;
+        }
+
+        .app-doctor {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .app-type {
+            color: var(--text-light);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .app-time {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Reports Table */
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .reports-table th, .reports-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .reports-table th {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .reports-table tr:hover {
+            background-color: #fcfcfc;
+        }
+
+        .btn-download {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-download:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-ready {
+            background-color: #e6f4ea;
+            color: #1e8e3e;
+        }
+        
+        .status-pending {
+            background-color: #fef7e0;
+            color: #f29900;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-hospital-user nav-logo"></i>
+            <span class="nav-title">MediCare General</span>
+        </div>
+        <div class="nav-actions">
+            <span class="user-greeting">Welcome, <span id="userName">John Doe</span></span>
+            <a href="/" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Sidebar Profile -->
+        <div class="card profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user-injured"></i>
+            </div>
+            <h1 class="profile-name">John Doe</h1>
+            <p class="profile-id">Patient ID: P-001</p>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Age</div>
+                    <div class="stat-value">45 Yrs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Blood Group</div>
+                    <div class="stat-value">O Positive</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Gender</div>
+                    <div class="stat-value">Male</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Contact</div>
+                    <div class="stat-value">+1 234 567 890</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="far fa-calendar-check"></i>
+                    <h2>Upcoming Appointments</h2>
+                </div>
+                
+                <ul class="appointment-list">
+                    <li class="appointment-item">
+                        <div class="app-date">
+                            <div class="day">28</div>
+                            <div class="month">Mar</div>
+                        </div>
+                        <div class="app-details">
+                            <div class="app-doctor">Dr. Sarah Jenkins</div>
+                            <div class="app-type"><i class="fas fa-stethoscope"></i> General Cardiology Consultation</div>
+                        </div>
+                        <div class="app-time">
+                            <i class="far fa-clock"></i> 10:30 AM
+                        </div>
+                    </li>
+                    <li class="appointment-item urgent">
+                        <div class="app-date">
+                            <div class="day">05</div>
+                            <div class="month">Apr</div>
+                        </div>
+                        <div class="app-details">
+                            <div class="app-doctor">Dr. Michael Chen</div>
+                            <div class="app-type"><i class="fas fa-flask"></i> Comprehensive Blood Test</div>
+                        </div>
+                        <div class="app-time">
+                            <i class="far fa-clock"></i> 08:00 AM
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recent Reports -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="far fa-file-alt"></i>
+                    <h2>Recent Lab Reports</h2>
+                </div>
+                
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Test Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mar 15, 2026</td>
+                            <td>Lipid Panel</td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td><button class="btn-download"><i class="fas fa-download"></i> View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Feb 22, 2026</td>
+                            <td>CBC (Complete Blood Count)</td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td><button class="btn-download"><i class="fas fa-download"></i> View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Mar 24, 2026</td>
+                            <td>ECG Results</td>
+                            <td><span class="status-badge status-pending">Processing</span></td>
+                            <td><button class="btn-download" disabled style="opacity: 0.5; cursor: not-allowed;"><i class="fas fa-clock"></i> Wait</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

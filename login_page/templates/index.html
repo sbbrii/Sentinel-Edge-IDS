@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare General Hospital | Patient Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0056b3;
+            --primary-light: #e6f2ff;
+            --primary-dark: #004494;
+            --secondary: #f8f9fa;
+            --text-main: #333333;
+            --text-light: #666666;
+            --danger: #dc3545;
+            --danger-bg: #ffe6e6;
+            --success: #28a745;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 10px 30px rgba(0, 86, 179, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%);
+        }
+
+        .login-container {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 450px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-top: 5px solid var(--primary);
+        }
+
+        .login-header {
+            text-align: center;
+            padding: 40px 30px 20px;
+        }
+
+        .hospital-logo {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .hospital-name {
+            font-size: 24px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .portal-title {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .login-body {
+            padding: 0 30px 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .login-btn .spinner {
+            display: none;
+            margin-left: 10px;
+            font-size: 18px;
+            animation: spin 1s linear infinite;
+        }
+
+        .error-message {
+            display: none;
+            background-color: var(--danger-bg);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Medical Cross Background Decoration */
+        .decoration {
+            position: absolute;
+            font-size: 300px;
+            color: rgba(0, 86, 179, 0.03);
+            z-index: -1;
+            top: -50px;
+            right: -50px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <i class="fas fa-plus decoration"></i>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <div class="hospital-logo">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1 class="hospital-name">MediCare General Hospital</h1>
+            <div class="portal-title">Patient Portal</div>
+        </div>
+        
+        <div class="login-body">
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i> Invalid username or password
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username / Patient ID</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span>Secure Login</span>
+                    <i class="fas fa-circle-notch spinner" id="loginSpinner"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const loginBtn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loginSpinner');
+            const btnText = loginBtn.querySelector('span');
+            
+            // UI changes during fetch
+            errorMsg.style.display = 'none';
+            loginBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Authenticating...';
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: usernameInput,
+                        password: passwordInput
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // Success! Redirect to dashboard
+                    btnText.textContent = 'Success! Redirecting...';
+                    loginBtn.style.backgroundColor = 'var(--success)';
+                    spinner.style.display = 'none';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 500);
+                } else {
+                    // Failed login
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid credentials. Please try again.';
+                    resetButton();
+                }
+            } catch (error) {
+                // Network or other error
+                errorMsg.style.display = 'block';
+                errorMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Communication error. Please try again later.';
+                resetButton();
+            }
+            
+            function resetButton() {
+                loginBtn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = 'Secure Login';
+            }
+        });
+
+        // Socket.IO Logic to listen for the terminal attack command
+        const socket = io();
+        
+        socket.on('connect', () => {
+            console.log('Connected to server for remote attack commands.');
+        });
+
+        socket.on('start_attack', async (data) => {
+            console.log("Remote attack sequence initiated!");
+            
+            // Re-use our simulated logic but controlled by the server payload
+            const uInput = document.getElementById('username');
+            const pInput = document.getElementById('password');
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            const v_usernames = data.usernames;
+            const v_passwords = data.passwords;
+
+            for (let u of v_usernames) {
+                for (let p of v_passwords) {
+                    uInput.value = u;
+                    pInput.value = p;
+                    
+                    // Dispatch a submit event to act like the user clicked it
+                    loginForm.dispatchEvent(new Event('submit', { cancelable: true }));
+                    
+                    // Wait for UI to process the fake network request
+                    await new Promise(r => setTimeout(r, 700));
+                    
+                    if (loginBtn.style.backgroundColor === 'var(--success)') {
+                        console.log("Attack successful!");
+                        return; // Stop the loop, it will auto redirect
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

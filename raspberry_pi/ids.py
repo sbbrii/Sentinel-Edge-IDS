@@ -1,5 +1,4 @@
 import joblib
-import numpy as np
 import requests
 import time
 from datetime import datetime

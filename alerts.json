@@ -1,0 +1,90 @@
+[
+  {
+    "timestamp": "2026-04-01T13:45:08",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "BruteForce",
+    "anomaly_score": 71.11,
+    "received_at": "2026-04-01 13:45:07",
+    "protocol": "TCP",
+    "label": "BRUTEFORCE",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T13:45:28",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "PortScan",
+    "anomaly_score": 81.35,
+    "received_at": "2026-04-01 13:45:27",
+    "protocol": "TCP",
+    "label": "PORTSCAN",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T13:46:11",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "DoS",
+    "anomaly_score": 75.07,
+    "received_at": "2026-04-01 13:46:10",
+    "protocol": "TCP",
+    "label": "DOS",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T14:40:06",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "BruteForce",
+    "anomaly_score": 60.27,
+    "received_at": "2026-04-01 14:40:07",
+    "protocol": "TCP",
+    "label": "BRUTEFORCE",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T14:41:35",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "DoS",
+    "anomaly_score": 64.65,
+    "received_at": "2026-04-01 14:41:36",
+    "protocol": "TCP",
+    "label": "DOS",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T14:42:27",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "DoS",
+    "anomaly_score": 60.27,
+    "received_at": "2026-04-01 14:42:28",
+    "protocol": "TCP",
+    "label": "DOS",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T14:49:18",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "DoS",
+    "anomaly_score": 89.65,
+    "received_at": "2026-04-01 14:49:19",
+    "protocol": "TCP",
+    "label": "DOS",
+    "block_status": "unblocked"
+  },
+  {
+    "timestamp": "2026-04-01T14:50:21",
+    "src_ip": "10.42.0.214",
+    "dst_ip": "192.168.10.2",
+    "attack_type": "DoS",
+    "anomaly_score": 62.04,
+    "received_at": "2026-04-01 14:50:22",
+    "protocol": "TCP",
+    "label": "DOS",
+    "block_status": "temporary"
+  }
+]

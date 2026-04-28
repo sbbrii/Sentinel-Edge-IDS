@@ -1,3 +1,7 @@
 raspberry_pi/test.py
 models/
 *.pkl
+debug/
+simulation/
+honeypot_log.json
+dashboard_v2/
