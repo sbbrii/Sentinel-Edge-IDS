@@ -1,13 +1,13 @@
 # PacketWatch
 ## Real-Time ML-Powered Network Intrusion Detection System
 
-Silent Sentinel is a real-time, machine learning-based Network Intrusion Detection System (IDS) designed for resource-constrained network environments. It operates as an inline middlebox, inspecting traffic flows and blocking threats autonomously — without relying on signature databases or cloud connectivity.
+PacketWatch is a real-time, machine learning-based Network Intrusion Detection System (IDS) designed for resource-constrained network environments. It operates as an inline middlebox, inspecting traffic flows and blocking threats autonomously — without relying on signature databases or cloud connectivity.
 
 ---
 
 ## Overview
 
-Traditional IDS solutions depend on known-attack signatures, leaving networks vulnerable to novel or evolving threats. Silent Sentinel addresses this by combining unsupervised anomaly detection with supervised attack classification in a two-layer ML pipeline, deployed on a physical middlebox between the attacker and the protected network.
+Traditional IDS solutions depend on known-attack signatures, leaving networks vulnerable to novel or evolving threats. PacketWatch addresses this by combining unsupervised anomaly detection with supervised attack classification in a two-layer ML pipeline, deployed on a physical middlebox between the attacker and the protected network.
 
 The system was designed and evaluated in the context of a Primary Health Centre (PHC) network, where data sensitivity and reliable uptime are critical.
 
