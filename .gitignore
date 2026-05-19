@@ -5,3 +5,4 @@ debug/
 simulation/
 honeypot_log.json
 dashboard_v2/
+alert.json
