@@ -168,3 +168,4 @@ Features were selected through a two-phase process: initial importance ranking f
 - scikit-learn version must match between training and deployment environments — model `.pkl` files are version-sensitive
 - The IDS laptop uses the `FORWARD` iptables chain (not `INPUT`), as it operates as a router/middlebox
 - Running `ids.py` with `sudo` requires dependencies installed in the root Python environment
+- ...
