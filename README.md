@@ -1,7 +1,7 @@
 # PacketWatch
 ## Real-Time ML-Powered Network Intrusion Detection System
 
-PacketWatch is a real-time, machine learning-based Network Intrusion Detection System (IDS) designed for resource-constrained network environments. It operates as an inline middlebox, inspecting traffic flows and blocking threats autonomously — without relying on signature databases or cloud connectivity.
+PacketWatch is a real-time, machine learning-based Network Intrusion Detection System (IDS) designed for resource-constrained network environments. It operates as an inline middlebox, inspecting traffic flows and blocking threats autonomously - without relying on signature databases or cloud connectivity.
 
 ---
 
